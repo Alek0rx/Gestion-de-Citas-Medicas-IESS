@@ -1,4 +1,4 @@
-package gestion.gestion_citas_medicas.clasesNormales;
+package gestion.gestion_citas_medicas.ClasesNormales;
 
 public abstract class Persona {
     private String nombre;
@@ -6,17 +6,18 @@ public abstract class Persona {
     private String cedula;
     private String correo;
     private String telefono;
+    private String direccion;
 
     // -- Constructor --
     public Persona() {}
 
-    public Persona(String nombre, String apellido, String cedula, String telefono, String correo) {
+    public Persona(String nombre, String apellido, String cedula, String telefono, String correo, String direccion) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
         this.cedula = cedula;
         this.correo = correo;
-
+        this.direccion = direccion;
     }
 
     // -- Getters y Setters --
@@ -58,5 +59,13 @@ public abstract class Persona {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 }

@@ -1,11 +1,11 @@
-package gestion.gestion_citas_medicas.clasesNormales;
+package gestion.gestion_citas_medicas.ClasesNormales;
 
 import java.time.LocalDate;
 
 public class Medicamento {
     private int idMedicamento;
     private String nombre;
-    private String despcripcion;
+    private String descripcion;
     private LocalDate fechaCreacion;
     private LocalDate fechaExpiracion;
 
@@ -14,11 +14,11 @@ public class Medicamento {
     public Medicamento() {}
 
     public Medicamento(int idMedicamento, LocalDate fechaExpiracion, LocalDate fechaCreacion,
-                       String despcripcion, String nombre) {
+                       String descripcion, String nombre) {
         this.idMedicamento = idMedicamento;
         this.fechaExpiracion = fechaExpiracion;
         this.fechaCreacion = fechaCreacion;
-        this.despcripcion = despcripcion;
+        this.descripcion = descripcion;
         this.nombre = nombre;
     }
 
@@ -48,12 +48,12 @@ public class Medicamento {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public String getDespcripcion() {
-        return despcripcion;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDespcripcion(String despcripcion) {
-        this.despcripcion = despcripcion;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String getNombre() {

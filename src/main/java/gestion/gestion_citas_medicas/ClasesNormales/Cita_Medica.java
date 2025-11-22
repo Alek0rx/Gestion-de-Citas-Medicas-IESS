@@ -1,4 +1,4 @@
-package gestion.gestion_citas_medicas.clasesNormales;
+package gestion.gestion_citas_medicas.ClasesNormales;
 
 import java.time.LocalDate;
 
