@@ -9,7 +9,7 @@ public class Paciente extends Persona{
     private LocalDate fechaNacimiento;
 
     // -- Constructor --
-    public Paciente() {
+    public Paciente(int idPaciente, String nombre, String apellido, String cedula, String telefono, String correo, String direccion, LocalDate fechaNacimiento, char genero) {
         super();
     }
 
