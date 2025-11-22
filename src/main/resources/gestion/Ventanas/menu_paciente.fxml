@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane layoutX="26.0" layoutY="25.0" prefHeight="348.0" prefWidth="544.0">
+         <children>
+            <Label layoutX="204.0" layoutY="80.0" text="Bienvenido al sistema paciente" />
+            <Button layoutX="123.0" layoutY="137.0" mnemonicParsing="false" text="Agendar Cita Medica" />
+            <Button layoutX="119.0" layoutY="203.0" mnemonicParsing="false" text="Actualizar Información" />
+            <Button layoutX="318.0" layoutY="137.0" mnemonicParsing="false" text="Visualizar el historial" />
+            <Button layoutX="317.0" layoutY="203.0" mnemonicParsing="false" text="Ver Citas Agendadas" />
+         </children>
+      </Pane>
+   </children>
+</Pane>
