@@ -3,7 +3,16 @@ module gestion.gestion_citas_medicas {
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
+    requires java.sql;
+    requires javafx.graphics;
+    requires javafx.base;
+    requires java.desktop;
+    //requires gestion.gestion_citas_medicas;
+
 
     opens gestion.gestion_citas_medicas to javafx.fxml;
     exports gestion.gestion_citas_medicas;
+
+    opens gestion.gestion_citas_medicas.Controladores to javafx.fxml;
+    exports gestion.gestion_citas_medicas.Controladores;
 }

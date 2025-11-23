@@ -1,8 +1,10 @@
 package gestion.gestion_citas_medicas.ClasesSQL;
 
+import gestion.gestion_citas_medicas.ClasesNormales.Paciente;
 import gestion.gestion_citas_medicas.ConexionBD.Conexion_BD;
 import gestion.gestion_citas_medicas.ClasesNormales.Doctor;
 
+import javax.print.Doc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -126,5 +128,34 @@ public class DoctorSQL {
             }
         }
         return lista;
+    }
+
+    public Object obtenerDoctorPorIdUsuario(int idUsuario) throws Exception {
+        String sql = "SELECT * FROM doctor WHERE id_usuario=?";
+        Doctor d = null;
+
+        try (Connection con = Conexion_BD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setInt(1, idUsuario);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                d = new Doctor(
+                        rs.getString("nombre"),
+                        rs.getString("apellido"),
+                        rs.getString("cedula_doc"),
+                        rs.getString("correo"),
+                        rs.getString("telefono"),
+                        rs.getString("direccion"),
+                        rs.getInt("id_doctor"),
+                        rs.getInt("id_usuario"),
+                        rs.getInt("id_especialidad"),
+                        rs.getString("estado"),
+                        rs.getString("consultorio")
+                );
+            }
+        }
+        return d;
     }
 }

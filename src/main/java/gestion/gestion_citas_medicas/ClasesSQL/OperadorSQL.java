@@ -43,7 +43,7 @@ public class OperadorSQL {
 
 
     // BUSCAR POR ID
-    public Operador buscarPorId(int id) {
+    public Operador buscarPorId(int id) throws Exception{
         String sql = "SELECT * FROM operador WHERE id_operador = ?";
 
         try (Connection conn = Conexion_BD.getConnection();
@@ -65,10 +65,7 @@ public class OperadorSQL {
                 );
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
         return null;
     }
 
@@ -98,7 +95,7 @@ public class OperadorSQL {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return lista;
@@ -145,5 +142,31 @@ public class OperadorSQL {
         }
 
         return false;
+    }
+
+    public Object obtenerOperadorPorIdUsuario(int idUsuario) throws Exception {
+        String sql = "SELECT * FROM operador WHERE id_usuario = ?";
+
+        try (Connection conn = Conexion_BD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idUsuario);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Operador(
+                        rs.getString("nombre"),
+                        rs.getString("apellido"),
+                        rs.getString("cedula_op"),
+                        rs.getString("telefono"),
+                        rs.getString("correo"),
+                        rs.getString("direccion"),
+                        rs.getInt("id_operador"),
+                        rs.getInt("id_usuario")
+                );
+            }
+
+        }
+        return null;
     }
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="paneFondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestion.gestion_citas_medicas.Controladores.CActualizarInfo">
+   <children>
+      <Pane fx:id="paneFrente" layoutX="35.0" layoutY="31.0" prefHeight="336.0" prefWidth="534.0">
+         <children>
+            <Label fx:id="labelActualizarInfo" layoutX="183.0" layoutY="25.0" text="ACTUALIZAR INFORMACIÓN" />
+            <Label fx:id="labelNombreAI" layoutX="21.0" layoutY="79.0" text="Nombre/s: " />
+            <Label fx:id="labelApellidoAI" layoutX="23.0" layoutY="124.0" text="Apellido/s:" />
+            <Label fx:id="labelTelefonoAI" layoutX="27.0" layoutY="169.0" text="Telefono:" />
+            <Label fx:id="labelCorreoAI" layoutX="296.0" layoutY="79.0" text="Correo:" />
+            <Label fx:id="labelDireccionAI" layoutX="294.0" layoutY="169.0" text="Dirección: " />
+            <Label fx:id="labelGeneroAI" layoutX="29.0" layoutY="215.0" text="Genero: " />
+            <Label fx:id="labelFechaNacAI" layoutX="259.0" layoutY="223.0" text="Fecha Nacimiento:" wrapText="true" />
+            <Label fx:id="labelCedulaAI" layoutX="296.0" layoutY="124.0" text="Cedula:" />
+            <TextField fx:id="textfieldNombreAI" layoutX="92.0" layoutY="75.0" prefHeight="17.0" prefWidth="146.0" />
+            <TextField fx:id="textfieldApellidoAI" layoutX="92.0" layoutY="120.0" prefHeight="17.0" prefWidth="146.0" />
+            <TextField fx:id="textfieldTelefonoAI" layoutX="92.0" layoutY="165.0" prefHeight="17.0" prefWidth="146.0" />
+            <TextField fx:id="textfieldCorreoAI" layoutX="361.0" layoutY="78.0" prefHeight="17.0" prefWidth="146.0" />
+            <TextField fx:id="textfieldDireccionAI" layoutX="363.0" layoutY="165.0" prefHeight="17.0" prefWidth="146.0" />
+            <TextField fx:id="textfieldGeneroAI" layoutX="92.0" layoutY="211.0" prefHeight="25.0" prefWidth="79.0" />
+            <TextField fx:id="textfieldCedulaAI" layoutX="363.0" layoutY="120.0" prefHeight="17.0" prefWidth="146.0" />
+            <Button fx:id="buttonGuardarCambios" layoutX="404.0" layoutY="297.0" mnemonicParsing="false" onAction="#clickGuardarCambios" text="Guardar cambios" />
+            <Button fx:id="buttonRegresarMenu" layoutX="37.0" layoutY="297.0" mnemonicParsing="false" onAction="#clickRegresarMenu" text="Regresar al menú" />
+            <DatePicker fx:id="selectorFechaAI" layoutX="365.0" layoutY="219.0" prefHeight="25.0" prefWidth="153.0" />
+            <Button fx:id="buttonActualizarCredencialesAI" layoutX="219.0" layoutY="297.0" mnemonicParsing="false" onAction="#clickActualizarCredenciales" text="Actualizar Credenciales" />
+         </children>
+      </Pane>
+   </children>
+</Pane>

@@ -70,15 +70,17 @@ public class PacienteSQL {
 
             if (rs.next()) {
                 p = new Paciente(
-                        rs.getInt("id_paciente"),
                         rs.getString("nombre"),
                         rs.getString("apellido"),
                         rs.getString("cedula"),
                         rs.getString("telefono"),
                         rs.getString("correo"),
                         rs.getString("direccion"),
-                        rs.getDate("fechaNacimiento").toLocalDate(),
-                        rs.getString("genero").charAt(0)
+                        rs.getInt("id_paciente"),
+                        rs.getInt("id_usuario"),
+                        rs.getString("genero").charAt(0),
+                        rs.getDate("fechaNacimiento").toLocalDate()
+
                 );
             }
         }
@@ -95,18 +97,48 @@ public class PacienteSQL {
 
             while (rs.next()) {
                 lista.add(new Paciente(
-                        rs.getInt("id"),
                         rs.getString("nombre"),
                         rs.getString("apellido"),
                         rs.getString("cedula"),
                         rs.getString("telefono"),
                         rs.getString("correo"),
                         rs.getString("direccion"),
-                        rs.getDate("fechaNacimiento").toLocalDate(),
-                        rs.getString("genero").charAt(0)
+                        rs.getInt("id_paciente"),
+                        rs.getInt("id_usuario"),
+                        rs.getString("genero").charAt(0),
+                        rs.getDate("fechaNacimiento").toLocalDate()
                 ));
             }
         }
         return lista;
     }
+
+    public Object obtenerPacientePorIdUsuario(int idUsuario) throws Exception {
+        String sql = "SELECT * FROM paciente WHERE id_usuario=?";
+        Paciente p = null;
+
+        try (Connection con = Conexion_BD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setInt(1, idUsuario);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                p = new Paciente(
+                        rs.getString("nombre"),
+                        rs.getString("apellido"),
+                        rs.getString("cedula_paciente"),
+                        rs.getString("telefono"),
+                        rs.getString("correo"),
+                        rs.getString("direccion"),
+                        rs.getInt("id_paciente"),
+                        rs.getInt("id_usuario"),
+                        rs.getString("genero").charAt(0),
+                        rs.getDate("fecha_nacimiento").toLocalDate()
+                );
+            }
+        }
+        return p;
+    }
+
 }
