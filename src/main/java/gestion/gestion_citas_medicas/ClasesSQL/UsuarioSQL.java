@@ -43,6 +43,24 @@ public class UsuarioSQL {
         }
     }
 
+    public boolean actualizarCredenciales(int idUsuario, String nuevoUsuario, String nuevaPassword) {
+        String sql = "UPDATE usuario SET usuario = ?, password = ? WHERE id_usuario = ?";
+
+        try (Connection con = Conexion_BD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setString(1, nuevoUsuario);
+            stmt.setString(2, nuevaPassword);
+            stmt.setInt(3, idUsuario);
+
+            int filas = stmt.executeUpdate();
+            return filas > 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al actualizar credenciales: " + e.getMessage(), e);
+        }
+    }
+
     public List<Usuario> findAll() throws Exception {
         String sql = "SELECT * FROM usuario";
         List<Usuario> lista = new ArrayList<>();

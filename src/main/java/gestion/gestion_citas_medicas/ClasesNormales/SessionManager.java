@@ -21,4 +21,8 @@ public class SessionManager {
         usuarioBase = null;
         perfil = null;
     }
+
+    public static void actualizarPerfil(Object nuevoperfil) {
+        perfil = nuevoperfil;
+    }
 }

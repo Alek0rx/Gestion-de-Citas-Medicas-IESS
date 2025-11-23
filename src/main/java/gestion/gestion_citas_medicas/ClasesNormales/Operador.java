@@ -33,4 +33,9 @@ public class Operador extends Persona {
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

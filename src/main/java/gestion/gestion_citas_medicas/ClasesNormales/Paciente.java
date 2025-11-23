@@ -66,4 +66,9 @@ public class Paciente extends Persona{
     public void setGenero(char genero) {
         this.genero = genero;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

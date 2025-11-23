@@ -62,4 +62,9 @@ public class Doctor extends Persona {
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + estado + consultorio;
+    }
 }
