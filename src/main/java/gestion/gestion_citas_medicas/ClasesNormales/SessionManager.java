@@ -3,6 +3,7 @@ public class SessionManager {
 
     private static Usuario usuarioBase;
     private static Object perfil;  // Puede ser Paciente, Doctor u Operador
+    private static Object especialidades;
 
     public static void setSesion(Usuario base, Object perfilData) {
         usuarioBase = base;
@@ -25,4 +26,5 @@ public class SessionManager {
     public static void actualizarPerfil(Object nuevoperfil) {
         perfil = nuevoperfil;
     }
+
 }

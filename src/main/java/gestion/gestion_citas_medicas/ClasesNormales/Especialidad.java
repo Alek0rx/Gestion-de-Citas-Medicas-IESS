@@ -4,6 +4,8 @@ public class Especialidad {
     private int idTipo;
     private String nombre;
     private String descripcion;
+    private int idEspecialidad;
+    private String nombreEspecialidad;
 
     // -- Constructor --
 
@@ -13,6 +15,11 @@ public class Especialidad {
         this.idTipo = idTipo;
         this.descripcion = descripcion;
         this.nombre = nombre;
+    }
+
+    public Especialidad(int idEspecialidad, String nombreEspecialidad) {
+        this.idEspecialidad = idEspecialidad;
+        this.nombreEspecialidad = nombreEspecialidad;
     }
 
     // -- Setters y Getters
@@ -39,5 +46,13 @@ public class Especialidad {
 
     public void setIdTipo(int idTipo) {
         this.idTipo = idTipo;
+    }
+
+    public String getNombreEspecialidad() {
+        return nombreEspecialidad;
+    }
+
+    public void setNombreEspecialidad(String nombreEspecialidad) {
+        this.nombreEspecialidad = nombreEspecialidad;
     }
 }

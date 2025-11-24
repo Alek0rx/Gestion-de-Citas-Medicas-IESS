@@ -158,4 +158,26 @@ public class DoctorSQL {
         }
         return d;
     }
+
+    public String obtenerEspecialidadPorUsuario(int idUsuario) throws Exception {
+        String sql = "SELECT e.id_especialidad " +
+                "FROM doctor d " +
+                "JOIN especialidad e ON d.id_especialidad = e.id_especialidad " +
+                "WHERE d.id_usuario = ?";
+        String especialidad = null;
+
+        try (Connection con = Conexion_BD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setInt(1, idUsuario);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                especialidad = rs.getString("nombre_especialidad");
+            }
+        }
+
+        return especialidad;
+    }
+
 }

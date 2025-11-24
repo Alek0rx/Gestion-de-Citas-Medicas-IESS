@@ -53,7 +53,6 @@ public class CActualizarInfo implements ControladorInyectable {
 
     @FXML
     public void initialize() {
-
     }
 
     @Override
