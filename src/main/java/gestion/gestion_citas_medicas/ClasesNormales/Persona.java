@@ -68,4 +68,9 @@ public abstract class Persona {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
+    @Override
+    public String toString() {
+        return nombre + apellido + telefono + correo + direccion + cedula;
+    }
 }

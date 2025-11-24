@@ -147,74 +147,62 @@ public class Cita_MedicaSQL {
         return lista;
     }
 
-
-    public List<Integer> encontrarHorariosOcupadosPorPaciente(int idPaciente, LocalDate fecha, int idCitaExcluir) throws Exception {
-
-        String sql = "SELECT id_horario FROM cita_medica " +
-                "WHERE id_paciente = ? AND fecha = ? AND id_cita_medica != ? AND estado != 'Cancelado'";
-
-        List<Integer> horariosOcupados = new ArrayList<>();
+    public List<Cita_Medica> findByDoctor(int idDoctor) throws Exception {
+        String sql = "SELECT * FROM cita_medica WHERE id_cita_medica=?";
+        List<Cita_Medica> lista = new ArrayList<>();
 
         try (Connection con = Conexion_BD.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
 
-            stmt.setInt(1, idPaciente);
-            stmt.setDate(2, Date.valueOf(fecha));
-            stmt.setInt(3, idCitaExcluir);
+            stmt.setInt(1, idDoctor);
+            ResultSet rs = stmt.executeQuery();
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    horariosOcupados.add(rs.getInt("id_horario"));
-                }
+            while (rs.next()) {
+                lista.add(new Cita_Medica(
+                        rs.getInt("id_cita_medica"),
+                        rs.getDate("fecha").toLocalDate(),
+                        rs.getString("estado"),
+                        rs.getInt("id_especialidad"),
+                        rs.getInt("id_doctor"),
+                        rs.getInt("id_paciente"),
+                        rs.getInt("id_horario")
+                ));
             }
         }
-        return horariosOcupados;
+
+        return lista;
     }
 
-    public List<Integer> encontrarHorariosOcupadosPorPaciente(int idPaciente, LocalDate fecha) throws Exception {
+    public List<Cita_Medica> findByEspecialidad(int idEspecialidad) throws Exception {
+        String sql = """
+        SELECT c.*
+        FROM cita_medica c
+        JOIN doctor d ON c.id_doctor = d.id_doctor
+        WHERE d.id_especialidad = ?
+    """;
 
+        List<Cita_Medica> lista = new ArrayList<>();
 
-        String sql = "SELECT id_horario FROM cita_medica " +
-                "WHERE id_paciente = ? AND fecha = ? AND estado != 'Cancelado'";
+        Connection con = Conexion_BD.getConnection();
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, idEspecialidad);
+        ResultSet rs = ps.executeQuery();
 
-        List<Integer> horariosOcupados = new ArrayList<>();
+        while (rs.next()) {
+            Cita_Medica c = new Cita_Medica();
+            c.setIdCita(rs.getInt("idCita"));
+            c.setFechaCita(rs.getDate("fechaCita").toLocalDate());
+            c.setEstado(rs.getString("estado"));
+            c.setIdTipo(rs.getInt("idTipo"));
+            c.setIdDoctor(rs.getInt("idDoctor"));
+            c.setIdPaciente(rs.getInt("idPaciente"));
+            c.setIdHorario(rs.getInt("idHorario"));
 
-        try (Connection con = Conexion_BD.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
-
-            stmt.setInt(1, idPaciente);
-            stmt.setDate(2, Date.valueOf(fecha));
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    horariosOcupados.add(rs.getInt("id_horario"));
-                }
-            }
+            lista.add(c);
         }
-        return horariosOcupados;
+
+        return lista;
     }
 
 
-    public void cancelarCitaMedica(int idCita) throws Exception {
-        String sql = "UPDATE cita_medica SET estado=? " + "WHERE id_cita_medica=?;";
-        try (Connection con = Conexion_BD.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1,"cancelada");
-            stmt.setInt(2,idCita);
-
-            stmt.executeUpdate();
-        }
-    }
-
-    public void actualizarCita(int idCita, LocalDate nuevaFecha, int nuevoIdHorario) throws Exception {
-        String sql = "UPDATE cita_medica SET fecha=?, id_horario=? WHERE id_cita_medica=?;";
-        try (Connection con = Conexion_BD.getConnection();
-            PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setDate(1, Date.valueOf(nuevaFecha));
-            stmt.setInt(2, nuevoIdHorario);
-            stmt.setInt(3, idCita);
-
-            stmt.executeUpdate();
-        }
-    }
 }

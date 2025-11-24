@@ -90,4 +90,18 @@ public class EspecialidadSQL {
 
         return lista;
     }
+
+    public int findIdByNombre(String nombre) throws Exception {
+        String sql = "SELECT idEspecialidad FROM especialidad WHERE nombre = ?";
+        Connection con = Conexion_BD.getConnection();
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, nombre);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            return rs.getInt("idEspecialidad");
+        }
+        return 0; // o lanzar excepción
+    }
+
 }

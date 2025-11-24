@@ -34,5 +34,9 @@ public class Operador extends Persona {
         this.idUsuario = idUsuario;
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 
 }
