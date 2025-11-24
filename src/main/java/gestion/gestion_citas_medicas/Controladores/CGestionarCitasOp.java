@@ -56,7 +56,6 @@ public class CGestionarCitasOp implements ControladorInyectable{
         cargarInformacionDoctor();
         cargarEspecialidades();
         cargarDoctores();
-        cargarCitasPorEspecialidad();
     }
 
     @FXML
@@ -107,52 +106,6 @@ public class CGestionarCitasOp implements ControladorInyectable{
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error cargando doctores: " + e.getMessage());
-        }
-    }
-
-    public void initialize() {
-        columnIdCitaOp.setCellValueFactory(new PropertyValueFactory<>("idCita"));
-        columnFechaCitaOp.setCellValueFactory(cell ->
-                new SimpleStringProperty(cell.getValue().getFechaCita().toString())
-        );
-
-        columnHoraCitaOp.setCellValueFactory(cell -> {
-            HorarioSQL hsql = new HorarioSQL();
-            try {
-                String hora = hsql.findById2(cell.getValue().getIdHorario()).getHora();
-                return new SimpleStringProperty(hora);
-            } catch (Exception e) {
-                return new SimpleStringProperty("—");
-            }
-        });
-
-        columnPacienteCitaOp.setCellValueFactory(cell -> {
-            PacienteSQL psql = new PacienteSQL();
-            try {
-                Paciente p = psql.findById(cell.getValue().getIdPaciente());
-                return new SimpleStringProperty(p.getNombre() + " " + p.getApellido());
-            } catch (Exception e) {
-                return new SimpleStringProperty("—");
-            }
-        });
-    }
-
-    public void cargarCitasPorEspecialidad() {
-
-        try {
-            String esp = choiceboxEspecialidadOp.getValue();
-            if (esp == null) return;
-
-            EspecialidadSQL espSQL = new EspecialidadSQL();
-            int idEsp = espSQL.findIdByNombre(esp);
-
-            Cita_MedicaSQL citaSQL = new Cita_MedicaSQL();
-            List<Cita_Medica> lista = citaSQL.findByEspecialidad(idEsp);
-
-            tableCitasOp.setItems(FXCollections.observableArrayList(lista));
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
