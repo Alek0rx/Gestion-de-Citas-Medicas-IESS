@@ -6,7 +6,6 @@ public class Horario {
     private int idHorario;
     private LocalTime horaInicio;
     private LocalTime horaFin;
-    private String hora;
 
     // -- Constructor --
     public Horario() {}
@@ -42,8 +41,4 @@ public class Horario {
     public void setHoraFin(LocalTime horaFin) {
         this.horaFin = horaFin;
     }
-
-    public String getHora() { return hora; }
-
-    public void setHora(String hora) { this.hora = hora; }
 }

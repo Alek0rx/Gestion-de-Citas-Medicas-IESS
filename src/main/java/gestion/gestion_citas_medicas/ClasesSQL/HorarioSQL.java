@@ -67,7 +67,7 @@ public class HorarioSQL {
         if (rs.next()) {
             Horario h = new Horario();
             h.setIdHorario(rs.getInt("idHorario"));
-            h.setHora(rs.getString("hora"));
+            h.setIdHorario(Integer.parseInt(rs.getString("hora")));
             return h;
         }
 

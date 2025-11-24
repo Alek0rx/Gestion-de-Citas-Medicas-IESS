@@ -22,9 +22,13 @@ public class PacienteSQL {
             stmt.setString(5, p.getCorreo());
             stmt.setString(6, p.getDireccion());
 
+            // FALTA CRÍTICA: enviar id_paciente
+            stmt.setInt(7, p.getIdPaciente());
+
             stmt.executeUpdate();
         }
     }
+
 
     public void delete(int id) throws Exception {
         String sql = "DELETE FROM paciente WHERE id_paciente=?";
