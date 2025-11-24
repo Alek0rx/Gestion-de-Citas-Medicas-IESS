@@ -1,9 +1,6 @@
 package gestion.gestion_citas_medicas.Logica;
 
-import gestion.gestion_citas_medicas.ClasesNormales.Historial_Medico;
-import gestion.gestion_citas_medicas.ClasesNormales.Medicamento;
-import gestion.gestion_citas_medicas.ClasesNormales.Receta;
-import gestion.gestion_citas_medicas.ClasesNormales.Tratamiento;
+import gestion.gestion_citas_medicas.ClasesNormales.*;
 import gestion.gestion_citas_medicas.ClasesSQL.*;
 
 import java.sql.SQLException;
@@ -37,5 +34,10 @@ public class HistorialService {
         catch (SQLException ex) {
             throw new Exception(ex.getMessage());
         }
+    }
+
+    public DetalleTratamiento obtenerDetallesTratamiento(int idHistorial) throws Exception {
+        // Aquí invocarías un nuevo método SQL que haga el JOIN entre Historial, Tratamiento, Receta, y Medicamento
+        return historialSQL.findTratamientoByHistorialId(idHistorial);
     }
 }
