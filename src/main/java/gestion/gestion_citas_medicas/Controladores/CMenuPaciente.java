@@ -66,9 +66,7 @@ public class CMenuPaciente implements ControladorInyectable {
 
         Button botonPresionado = (Button) event.getSource();
         String botonId = botonPresionado.getId();
-        System.out.println("botonId: " + botonId);
         String fxmlPath = obtenerFXMLsegunBoton(botonId);
-
         if (mainController == null) {
             System.err.println("Error: No se ha establecido la referencia al CMainVentana.");
             return;

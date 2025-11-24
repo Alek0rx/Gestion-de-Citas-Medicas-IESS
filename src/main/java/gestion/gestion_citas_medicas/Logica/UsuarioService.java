@@ -36,24 +36,6 @@ public class UsuarioService {
         return user;
     }
 
-//    public void establecerUsuario(Usuario user) throws Exception {
-//
-//        Object perfil = switch (user.getRol()) {
-//            case "Paciente" ->
-//                    pacienteDAO.obtenerPacientePorIdUsuario(user.getIdUsuario());
-//            case "Doctor" ->
-//                    doctorDAO.obtenerDoctorPorIdUsuario(user.getIdUsuario());
-//            case "Operador" ->
-//                    operadorDAO.obtenerOperadorPorIdUsuario(user.getIdUsuario());
-//            default -> {
-//                System.out.println("Usuario no encontrado");
-//                throw new RuntimeException("Rol no reconocido: " + user.getRol());
-//            }
-//        };
-//
-//        // Guarda toda la sesión para acceso global
-//        SessionManager.setSesion(user, perfil);
-//    }
     public void establecerUsuario(Usuario user) throws Exception {
         if (user == null) {
             throw new IllegalArgumentException("Usuario nulo recibido en establecerUsuario");
@@ -72,6 +54,9 @@ public class UsuarioService {
                 case "paciente" -> perfil = pacienteDAO.obtenerPacientePorIdUsuario(user.getIdUsuario());
                 case "doctor"   -> perfil = doctorDAO.obtenerDoctorPorIdUsuario(user.getIdUsuario());
                 case "operador" -> perfil = operadorDAO.obtenerOperadorPorIdUsuario(user.getIdUsuario());
+                case "administrador" -> {
+                    perfil = user;
+                }
                 default -> throw new RuntimeException("Rol no reconocido: " + user.getRol());
             }
         } catch (

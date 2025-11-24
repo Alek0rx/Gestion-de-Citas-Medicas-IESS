@@ -57,7 +57,7 @@ public class CMenuAdmin implements ControladorInyectable {
             return;
         }
         try {
-            mainController.loadAndSetCenter(fxmlPath, (botonId.equals("buttonActualizarDatos")) ? "Administrador" : null);
+            mainController.loadAndSetCenter(fxmlPath, null);
         }
         catch (IOException e) {
             System.err.println("Error al cargar el FXML: " + fxmlPath);

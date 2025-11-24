@@ -38,4 +38,5 @@ public class Operador extends Persona {
     public String toString() {
         return super.toString();
     }
+
 }

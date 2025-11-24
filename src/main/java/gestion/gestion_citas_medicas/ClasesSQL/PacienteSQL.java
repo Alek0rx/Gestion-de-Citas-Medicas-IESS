@@ -3,32 +3,11 @@ package gestion.gestion_citas_medicas.ClasesSQL;
 import gestion.gestion_citas_medicas.ClasesNormales.Paciente;
 import gestion.gestion_citas_medicas.ConexionBD.Conexion_BD;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PacienteSQL {
-
-    public void insert(Paciente p) throws Exception {
-        String sql = "INSERT INTO paciente ( nombre, apellido, cedula, telefono, correo, direccion, fechaNacimiento, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (Connection con = Conexion_BD.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
-
-            stmt.setString(1, p.getNombre());
-            stmt.setString(2, p.getApellido());
-            stmt.setString(3, p.getCedula());
-            stmt.setString(4, p.getTelefono());
-            stmt.setString(5, p.getCorreo());
-            stmt.setString(6, p.getDireccion());
-            stmt.setDate(7, java.sql.Date.valueOf(p.getFechaNacimientoPaciente()));
-            stmt.setString(8, String.valueOf(p.getGenero()));
-
-            stmt.executeUpdate();
-        }
-    }
 
     public void update(Paciente p) throws Exception {
         String sql = "UPDATE paciente SET nombre=?, apellido=?, cedula=?, telefono=?, correo=?, direccion=? WHERE id_paciente=?";
@@ -141,4 +120,38 @@ public class PacienteSQL {
         return p;
     }
 
+    public String obtenerNombreCompleto(int idUsuario) {
+        String sql = "SELECT nombre, apellido FROM paciente WHERE id_usuario = ?";
+        try (Connection con = Conexion_BD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, idUsuario);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("nombre") + " " + rs.getString("apellido");
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return "Desconocido";
+    }
+
+
+    public void insertarPaciente(Paciente p) throws SQLException {
+        String sql = "INSERT INTO paciente (nombre, apellido, cedula_paciente, telefono, correo, direccion, genero, fecha_nacimiento, id_usuario) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection con = Conexion_BD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setString(1, p.getNombre());
+            stmt.setString(2, p.getApellido());
+            stmt.setString(3, p.getCedula());
+            stmt.setString(4, p.getTelefono());
+            stmt.setString(5, p.getCorreo());
+            stmt.setString(6, p.getDireccion());
+            stmt.setString(7, String.valueOf(p.getGenero())); // Genero es char ('H' o 'M')
+            stmt.setDate(8, java.sql.Date.valueOf(p.getFechaNacimiento())); // Conversión de LocalDate a java.sql.Date
+            stmt.setInt(9, p.getIdUsuario()); // El FK que obtuvimos de la tabla 'usuario'
+
+            stmt.executeUpdate();
+        }
+    }
 }
