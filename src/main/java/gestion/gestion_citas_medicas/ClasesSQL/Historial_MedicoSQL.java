@@ -6,6 +6,7 @@ import gestion.gestion_citas_medicas.ConexionBD.Conexion_BD;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,28 +56,36 @@ public class Historial_MedicoSQL {
         }
     }
 
-    public Historial_Medico findById(int id) throws Exception {
-        String sql = "SELECT * FROM historial_medico WHERE id_historial=?";
-        Historial_Medico h = null;
+    public List<Historial_Medico> findById(int idPaciente) throws Exception {
+        List<Historial_Medico> lista = new ArrayList<>();
+
+        // La consulta une historial_medico con cita_medica para filtrar por el paciente.
+        String sql = "SELECT h.* " +
+                "FROM historial_medico h " +
+                "JOIN cita_medica c ON h.id_cita_medica = c.id_cita_medica " +
+                "WHERE c.id_paciente = ? " +
+                "ORDER BY h.fecha_registro DESC";
 
         try (Connection con = Conexion_BD.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
 
-            stmt.setInt(1, id);
+            stmt.setInt(1, idPaciente);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                h = new Historial_Medico(
+            while (rs.next()) {
+                lista.add(new Historial_Medico(
                         rs.getInt("id_historial"),
                         rs.getDate("fecha_registro").toLocalDate(),
                         rs.getString("signos_vitales"),
                         rs.getInt("id_cita_medica"),
                         rs.getString("diagnostico")
-                );
+                ));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("Error al obtener el historial del paciente: " + e.getMessage());
         }
-
-        return h;
+        return lista;
     }
 
     public List<Historial_Medico> findAll() throws Exception {

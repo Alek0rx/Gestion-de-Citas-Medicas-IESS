@@ -1,38 +1,59 @@
 package gestion.gestion_citas_medicas.Controladores;
+
+import gestion.gestion_citas_medicas.ClasesNormales.Historial_Medico;
+import gestion.gestion_citas_medicas.ClasesNormales.Paciente;
+import gestion.gestion_citas_medicas.ClasesNormales.SessionManager;
+import gestion.gestion_citas_medicas.Logica.HistorialService; // Nuevo servicio
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.cell.PropertyValueFactory;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 public class CVisualizarHistorialMedico implements ControladorInyectable {
+
     private CMainVentana mainController;
-    // Panes principales
-    @FXML private Pane paneFondo;
-    @FXML private Pane paneFrente;
+    private final HistorialService historialService = new HistorialService(); // Usamos el servicio de historial
 
-    // TableView y sus columnas
-    @FXML private TableView<?> tableHistorialCitas;  // Cambia el <?> por tu modelo si lo tienes
-
-    @FXML private TableColumn<?, ?> columnIdHistorial;
-    @FXML private TableColumn<?, ?> columnFechaHistorial;
-    @FXML private TableColumn<?, ?> columnDiagnosticoHistorial;
-
-    // Etiquetas
-    @FXML private Label labelHistorialClinico;
-
-    // Botones
-    @FXML private Button buttonRegresarAlMenu;
+    @FXML private TableView<Historial_Medico> tableHistorialCitas;
+    @FXML private TableColumn<Historial_Medico, Integer> columnIdHistorial;
+    @FXML private TableColumn<Historial_Medico, String> columnFechaHistorial;
+    @FXML private TableColumn<Historial_Medico, String> columnDiagnosticoHistorial;
     @FXML private Button buttonVerDetalles;
 
-    // Función para asignar el controlador del contenedor principal
+    @Override
     public void setMainController(CMainVentana mainController) {
         this.mainController = mainController;
+        iniciarTabla(); // Cargar datos al iniciar la vista
     }
-    // Método que se ejecuta automáticamente después de cargar el FXML
-    @FXML
-    private void initialize() {
 
+    private void iniciarTabla() {
+        columnIdHistorial.setCellValueFactory(new PropertyValueFactory<>("idHistorial"));
+        columnFechaHistorial.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getFechaRegistro().toString())
+        );
+        columnDiagnosticoHistorial.setCellValueFactory(new PropertyValueFactory<>("diagnostico"));
+        try {
+            // Obtener el ID del paciente logueado
+            Paciente paciente = SessionManager.getPerfil(Paciente.class);
+            int idPaciente = paciente.getIdPaciente();
+
+            // Llamar a la capa de servicio
+            List<Historial_Medico> historiales = historialService.obtenerHistorialPorPaciente(idPaciente);
+
+            tableHistorialCitas.setItems(FXCollections.observableArrayList(historiales));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "Error al cargar el historial: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @FXML
@@ -40,8 +61,7 @@ public class CVisualizarHistorialMedico implements ControladorInyectable {
         mainController.volverAlMenuPrincipal("Paciente");
     }
 
-    @FXML
-    private void clickVerDetalles() {
+    public void clickVerDetalles(ActionEvent actionEvent) {
 
     }
 }

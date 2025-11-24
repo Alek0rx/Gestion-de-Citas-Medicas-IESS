@@ -218,6 +218,32 @@ public class Cita_MedicaSQL {
         }
     }
 
+//    public List<Cita_Medica> findByDoctor(int idDoctor) throws Exception {
+//        String sql = "SELECT * FROM cita_medica WHERE id_doctor=?";
+//        List<Cita_Medica> lista = new ArrayList<>();
+//
+//        try (Connection con = Conexion_BD.getConnection();
+//             PreparedStatement stmt = con.prepareStatement(sql)) {
+//
+//            stmt.setInt(1, idDoctor);
+//            ResultSet rs = stmt.executeQuery();
+//
+//            while (rs.next()) {
+//
+//                lista.add(new Cita_Medica(
+//                        rs.getDate("fecha").toLocalDate(),
+//                        rs.getString("estado"),
+//                        rs.getInt("id_cita_medica"),
+//                        rs.getInt("id_doctor"),
+//                        rs.getInt("id_paciente"),
+//                        rs.getInt("id_horario")
+//                ));
+//            }
+//        }
+//
+//        return lista;
+//    }
+
     public List<Cita_Medica> findByDoctor(int idDoctor) throws Exception {
         String sql = "SELECT * FROM cita_medica WHERE id_doctor=?";
         List<Cita_Medica> lista = new ArrayList<>();
@@ -229,18 +255,42 @@ public class Cita_MedicaSQL {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
+                Cita_Medica cita = new Cita_Medica(); // Usar constructor simple
 
-                lista.add(new Cita_Medica(
-                        rs.getDate("fecha").toLocalDate(), // fechaCita
-                        rs.getString("estado"),            // estado
-                        rs.getInt("id_cita_medica"),       // Assuming this is used as idTipo (Type ID)
-                        rs.getInt("id_doctor"),            // idDoctor (should match the input)
-                        rs.getInt("id_paciente"),          // idPaciente
-                        rs.getInt("id_horario")            // idHorario
-                ));
+                // 1. ASIGNAR EL ID DE LA CITA DE LA BASE DE DATOS
+                cita.setIdCita(rs.getInt("id_cita_medica"));
+
+
+                cita.setFechaCita(rs.getDate("fecha").toLocalDate());
+                cita.setEstado(rs.getString("estado"));
+                cita.setIdTipo(rs.getInt("id_especialidad"));
+                cita.setIdDoctor(rs.getInt("id_doctor"));
+                cita.setIdPaciente(rs.getInt("id_paciente"));
+                cita.setIdHorario(rs.getInt("id_horario"));
+
+                lista.add(cita);
             }
         }
-
         return lista;
+    }
+
+    public void actualizarEstado(int idCita, String nuevoEstado) throws Exception {
+        String sql = "UPDATE cita_medica SET estado = ? WHERE id_cita_medica = ?";
+
+
+        try (Connection conn = Conexion_BD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, nuevoEstado);
+            ps.setInt(2, idCita);
+            int filasAfectadas = ps.executeUpdate();
+
+            if (filasAfectadas == 0) {
+                throw new Exception("No se encontró la cita con ID: " + idCita + " para actualizar.");
+            }
+
+        } catch (Exception e) {
+            throw new Exception("Error al actualizar el estado de la cita: " + e.getMessage(), e);
+        }
     }
 }

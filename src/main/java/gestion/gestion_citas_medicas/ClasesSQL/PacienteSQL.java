@@ -55,14 +55,14 @@ public class PacienteSQL {
                 p = new Paciente(
                         rs.getString("nombre"),
                         rs.getString("apellido"),
-                        rs.getString("cedula"),
+                        rs.getString("cedula_paciente"),
                         rs.getString("telefono"),
                         rs.getString("correo"),
                         rs.getString("direccion"),
                         rs.getInt("id_paciente"),
                         rs.getInt("id_usuario"),
                         rs.getString("genero").charAt(0),
-                        rs.getDate("fechaNacimiento").toLocalDate()
+                        rs.getDate("fecha_nacimiento").toLocalDate()
 
                 );
             }

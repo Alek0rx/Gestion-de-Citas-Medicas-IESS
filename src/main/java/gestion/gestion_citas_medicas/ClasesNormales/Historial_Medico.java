@@ -20,6 +20,13 @@ public class Historial_Medico {
         this.diagnostico = diagnostico;
     }
 
+    public Historial_Medico(int idCita, String trim, String trim1, LocalDate value) {
+        this.idCita = idCita;
+        this.diagnostico = trim;
+        this.signosVitales = trim1;
+        this.fechaRegistro = value;
+    }
+
     // -- Getters y Setters --
     public int getIdHistorial() {
         return idHistorial;

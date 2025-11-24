@@ -86,5 +86,19 @@ public class RecetaSQL {
             ps.executeUpdate();
         }
     }
+
+    public void insert(Connection con, Receta r) throws SQLException {
+        // La tabla receta usa un composite key (id_tratamiento, id_medicamento)
+        String sql = "INSERT INTO receta (id_tratamiento, id_medicamento, indicaciones) VALUES (?, ?, ?)";
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setInt(1, r.getIdTratamiento()); // Debe estar seteado antes de llamar a este método
+            stmt.setInt(2, r.getIdMedicamento());
+            stmt.setString(3, r.getIndicaciones());
+
+            stmt.executeUpdate();
+        }
+    }
 }
 

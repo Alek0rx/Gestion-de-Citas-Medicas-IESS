@@ -1,9 +1,9 @@
 package gestion.gestion_citas_medicas.ClasesNormales;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.util.*;
 
 public class ElementosEstaticos {
 
@@ -25,6 +25,29 @@ public class ElementosEstaticos {
             Map.entry(10, "NUT-00N"),
             Map.entry(11, "END-00E"),
             Map.entry(12, "URO-00U")
+    );
+
+    public static final Map<Integer, String> MEDICAMENTOS = Map.ofEntries(
+            Map.entry(1,  "Paracetamol"),
+            Map.entry(2,  "Ibuprofeno 400mg"),
+            Map.entry(3,  "Amoxicilina"),
+            Map.entry(4,  "Losartán"),
+            Map.entry(5,  "Omeprazol"),
+            Map.entry(6,  "Metformina"),
+            Map.entry(7,  "Atorvastatina"),
+            Map.entry(8,  "Sertralina"),
+            Map.entry(9,  "Salbutamol inhalador"),
+            Map.entry(10, "Clotrimazol crema"),
+            Map.entry(11, "Ácido fólico"),
+            Map.entry(12, "Levotiroxina"),
+            Map.entry(13, "Tamsulosina"),
+            Map.entry(14, "Hidrocortisona crema"),
+            Map.entry(15, "Diclofenac gel"),
+            Map.entry(16, "Cetirizina"),
+            Map.entry(17, "Aspirina"),
+            Map.entry(18, "Timolol gotas"),
+            Map.entry(19, "Metronidazol"),
+            Map.entry(20, "Ranitidina")
     );
 
     static {
@@ -100,4 +123,20 @@ public class ElementosEstaticos {
         return PREFIJOS_CONSULTORIO.getOrDefault(idEspecialidad, "N/A");
     }
 
+    public static ObservableList<Medicamento> getMedicamentosObservableList() {
+        // 1. Crear una lista temporal para almacenar los objetos Medicamento
+        List<Medicamento> lista = new ArrayList<>();
+
+        // 2. Iterar sobre las entradas (EntrySet) del Map
+        for (Map.Entry<Integer, String> entry : MEDICAMENTOS.entrySet()) {
+            int id = entry.getKey();
+            String nombre = entry.getValue();
+
+            // 3. Crear el objeto Medicamento y agregarlo a la lista
+            lista.add(new Medicamento(id, nombre));
+        }
+
+        // 4. Convertir la lista estándar en una ObservableList de JavaFX
+        return FXCollections.observableArrayList(lista);
+    }
 }

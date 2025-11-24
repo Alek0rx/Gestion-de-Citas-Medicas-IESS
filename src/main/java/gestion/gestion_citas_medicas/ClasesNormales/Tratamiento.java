@@ -12,14 +12,21 @@ public class Tratamiento {
     // -- Constructor --
     public Tratamiento() {}
 
-    public Tratamiento(int idTratamiento, LocalDate fechaFin,
-                       LocalDate fechaInicio, String descripcion, int idCita) {
+    public Tratamiento(int idTratamiento,  LocalDate fechaInicio, LocalDate fechaFin,
+                       String descripcion, int idCita) {
         this.idTratamiento = idTratamiento;
         this.fechaFin = fechaFin;
         this.fechaInicio = fechaInicio;
         this.descripcion = descripcion;
         this.idCita = idCita;
     }
+    public Tratamiento(String descripcion,LocalDate fechaInicio, LocalDate fechaFin, int idCita) {
+        this.fechaFin = fechaFin;
+        this.fechaInicio = fechaInicio;
+        this.descripcion = descripcion;
+        this.idCita = idCita;
+    }
+
     // -- Getters y Setters --
 
     public int getIdTratamiento() {
@@ -61,4 +68,5 @@ public class Tratamiento {
     public void setIdCita(int idCita) {
         this.idCita = idCita;
     }
+
 }

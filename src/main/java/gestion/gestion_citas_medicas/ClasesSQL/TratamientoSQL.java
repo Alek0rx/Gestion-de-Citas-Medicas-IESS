@@ -50,8 +50,7 @@ public class TratamientoSQL {
 
                     return new Tratamiento(
                             rs.getInt("id_tratamiento"),
-                            fechaFin,
-                            fechaInicio,
+                            fechaInicio, fechaFin,
                             rs.getString("descripcion"),
                             rs.getInt("id_cita_medica")
                     );
@@ -79,8 +78,7 @@ public class TratamientoSQL {
 
                     lista.add(new Tratamiento(
                             rs.getInt("id_tratamiento"),
-                            fechaFin,
-                            fechaInicio,
+                            fechaInicio, fechaFin,
                             rs.getString("descripcion"),
                             rs.getInt("id_cita_medica")
                     ));
@@ -119,4 +117,33 @@ public class TratamientoSQL {
             ps.executeUpdate();
         }
     }
+
+    public int insert(Connection con, Tratamiento t) throws SQLException {
+        String sql = "INSERT INTO tratamiento (id_cita_medica, descripcion, fecha_inicio, fecha_fin) VALUES (?, ?, ?, ?)";
+        int idTratamiento = -1;
+
+        try (PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setInt(1, t.getIdCita());
+            stmt.setString(2, t.getDescripcion());
+            stmt.setDate(3, Date.valueOf(t.getFechaInicio()));
+
+            // Manejar fecha_fin nula
+            if (t.getFechaFin() != null) {
+                stmt.setDate(4, Date.valueOf(t.getFechaFin()));
+            } else {
+                stmt.setNull(4, java.sql.Types.DATE);
+            }
+
+            stmt.executeUpdate();
+
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    idTratamiento = rs.getInt(1);
+                }
+            }
+        }
+        return idTratamiento;
+    }
 }
+

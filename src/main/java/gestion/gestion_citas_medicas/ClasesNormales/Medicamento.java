@@ -21,6 +21,10 @@ public class Medicamento {
         this.descripcion = descripcion;
         this.nombre = nombre;
     }
+    public Medicamento(int idMedicamento, String nombre){
+        this.idMedicamento = idMedicamento;
+        this.nombre = nombre;
+    }
 
     // -- Getters y Setters
 
@@ -62,5 +66,9 @@ public class Medicamento {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    @Override
+    public String toString() {
+        return this.nombre;
     }
 }

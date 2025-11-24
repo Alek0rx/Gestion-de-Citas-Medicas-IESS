@@ -6,19 +6,24 @@ import gestion.gestion_citas_medicas.ClasesSQL.PacienteSQL;
 import gestion.gestion_citas_medicas.Logica.VerCitas;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class CVerCitasDoctor implements ControladorInyectable {
+    public Button buttonAsignarTratamiento;
     private CMainVentana mainController;
+    private final VerCitas servicioCitas = new VerCitas();
+
 
     // Panes
     @FXML private Pane paneFondo;
@@ -40,9 +45,10 @@ public class CVerCitasDoctor implements ControladorInyectable {
     @FXML private TableColumn<Cita_Medica, String> columnEstadoCitaDoctor;
     @FXML private TableColumn<Cita_Medica, String> columnPacienteDoctor;
 
+    // Botones
     @FXML private Button buttonRegresarAlMenu;
-
-    // Este botón NO tiene fx:id en tu FXML → ¡debes agregarlo!
+    @FXML public Button buttonCrearEstadoCita;
+    @FXML public Button buttonCrearHistorial;
     @FXML private Button buttonVerDetallesCita;
 
     @Override
@@ -66,19 +72,10 @@ public class CVerCitasDoctor implements ControladorInyectable {
     }
 
 
-    public List<Cita_Medica> recolectarCitasDoctor() throws Exception {
-        Doctor doctorLogueado = SessionManager.getPerfil(Doctor.class);
-        if (doctorLogueado == null) {
-            return new ArrayList<>();
-        }
-        int idDoctor = doctorLogueado.getIdDoctor();
-        Cita_MedicaSQL citaSQL = new Cita_MedicaSQL();
-        return citaSQL.findByDoctor(idDoctor);
-    }
+
+    // Dentro de CVerCitasDoctor
 
     public void iniciarTabla() {
-
-        // Configurar columnas
         columnIdCitaDoctor.setCellValueFactory(new PropertyValueFactory<>("idCita"));
 
         columnFechaCitaDoctor.setCellValueFactory(cellData ->
@@ -87,36 +84,36 @@ public class CVerCitasDoctor implements ControladorInyectable {
 
         columnEstadoCitaDoctor.setCellValueFactory(new PropertyValueFactory<>("estado"));
 
-        // Hora desde HorarioSQL
-        HorarioSQL horarioSQL = new HorarioSQL();
         columnHoraCitaDoctor.setCellValueFactory(cellData -> {
-            try {
-                Horario h = horarioSQL.findById(cellData.getValue().getIdHorario());
-                return new SimpleStringProperty(h.getHoraInicio().toString());
-            } catch (Exception e) {
-                return new SimpleStringProperty("N/A");
-            }
+            int idHorario = cellData.getValue().getIdHorario();
+            String horarioTexto = ElementosEstaticos.getHorarioPorId(idHorario);
+            return new SimpleStringProperty(horarioTexto != null ? horarioTexto : "N/A");
         });
 
-        // Paciente desde PacienteSQL
-        PacienteSQL pacienteSQL = new PacienteSQL();
-        columnPacienteDoctor.setCellValueFactory(cellData -> {
-            try {
-                Paciente p = pacienteSQL.findById(cellData.getValue().getIdPaciente());
-                return new SimpleStringProperty(p.getNombre());
-            } catch (Exception e) {
-                return new SimpleStringProperty("N/A");
-            }
-        });
+        // Paciente: AHORA LLAMA AL SERVICIO
+        columnPacienteDoctor.setCellValueFactory(cellData ->
+                new SimpleStringProperty(servicioCitas.obtenerNombrePaciente(cellData.getValue().getIdPaciente()))
+        );
 
-        // Llenar tabla
+        // Carga de datos: AHORA LLAMA AL SERVICIO
         try {
-            List<Cita_Medica> citas = recolectarCitasDoctor();
+            List<Cita_Medica> citas = servicioCitas.obtenerCitasDoctor();
             tableCMD.setItems(FXCollections.observableArrayList(citas));
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Configuración del Listener y botón de historial (Esto se queda en el controlador)
+        tableCMD.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            actualizarEstadoBotonHistorial(newSelection);
+            actualizarEstadoBotonCambiarEstado(newSelection);
+        });
+
+        buttonCrearEstadoCita.setDisable(true);
+        buttonCrearHistorial.setDisable(true);
     }
+
+
 
 
     VerCitas c = new VerCitas();
@@ -144,4 +141,119 @@ public class CVerCitasDoctor implements ControladorInyectable {
         }
     }
 
+
+    public void actualizarEstadoBotonHistorial(Cita_Medica citaSeleccionada) {
+        if (citaSeleccionada != null && "realizada".equalsIgnoreCase(citaSeleccionada.getEstado())) {
+            buttonCrearHistorial.setDisable(false);
+        } else {
+            buttonCrearHistorial.setDisable(true);
+        }
+    }
+
+
+    @FXML
+    public void clickCambiarEstadoCita(ActionEvent actionEvent) {
+        Cita_Medica citaSeleccionada = tableCMD.getSelectionModel().getSelectedItem();
+        // ... (validaciones de null y estado 'pendiente' se mantienen) ...
+
+        if ("pendiente".equalsIgnoreCase(citaSeleccionada.getEstado())) {
+            int opcion = JOptionPane.showConfirmDialog(
+                    null,
+                    "¿Desea marcar la cita como 'realizada'?",
+                    "Confirmar cambio de estado",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (opcion == JOptionPane.YES_OPTION) {
+                try {
+                    // AHORA LLAMA AL SERVICIO para la actualización
+                    servicioCitas.actualizarEstadoCita(citaSeleccionada.getIdCita(), "realizada");
+
+                    citaSeleccionada.setEstado("realizada");
+                    iniciarTabla(); // Refrescar la tabla
+
+                    JOptionPane.showMessageDialog(null,
+                            "Estado de la cita actualizado a 'realizada'.",
+                            "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null,
+                            "Error al actualizar el estado de la cita en la base de datos: " + e.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }
+
+    public void actualizarEstadoBotonCambiarEstado(Cita_Medica citaSeleccionada) {
+        // Si la cita no es nula Y su estado es "pendiente" (ignorando mayúsculas/minúsculas)
+        if (citaSeleccionada != null && "pendiente".equalsIgnoreCase(citaSeleccionada.getEstado())) {
+            buttonCrearEstadoCita.setDisable(false);
+        } else {
+            buttonCrearEstadoCita.setDisable(true);
+        }
+    }
+
+
+
+// Dentro de CVerCitasDoctor.java
+
+    @FXML
+    public void clickCrearHistorial(ActionEvent actionEvent) {
+        Cita_Medica citaSeleccionada = tableCMD.getSelectionModel().getSelectedItem();
+
+        // 1. Validación de cita seleccionada y estado "realizada"
+        if (citaSeleccionada == null || !"realizada".equalsIgnoreCase(citaSeleccionada.getEstado())) {
+            JOptionPane.showMessageDialog(null,
+                    "Solo se puede crear el historial de citas 'realizadas'.",
+                    "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 2. Lógica para cargar el modal
+        try {
+            // Llamada al método del controlador principal para cargar la ventana modal
+            // y pasar la cita seleccionada.
+            mainController.cargarCreacionHistorial(citaSeleccionada);
+
+
+            iniciarTabla();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "Error al intentar abrir la ventana de creación de historial.",
+                    "Error de Carga", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void clickCrearTratamiento(ActionEvent actionEvent) {
+        Cita_Medica citaSeleccionada = tableCMD.getSelectionModel().getSelectedItem();
+
+        // 1. Validar selección y estado
+        // Solo se debe poder asignar un tratamiento si la cita fue 'realizada'
+        if (citaSeleccionada == null || !"realizada".equalsIgnoreCase(citaSeleccionada.getEstado())) {
+            JOptionPane.showMessageDialog(null,
+                    "Debe seleccionar una cita con estado 'realizada' para asignar un tratamiento.",
+                    "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            // 2. Llamar al controlador principal para cargar el modal
+            // La lógica del modal se delega al CMainVentana.
+            mainController.cargarCreacionTratamiento(citaSeleccionada);
+
+            // Opcional: Refrescar la tabla si la asignación del tratamiento afecta el estado de la cita
+            // iniciarTabla();
+
+        } catch (
+                IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "Error al intentar abrir la ventana de asignación de tratamiento.",
+                    "Error de Carga", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }
+
