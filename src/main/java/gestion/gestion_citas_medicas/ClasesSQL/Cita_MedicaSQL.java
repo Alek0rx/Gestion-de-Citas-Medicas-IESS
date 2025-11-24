@@ -3,11 +3,10 @@ package gestion.gestion_citas_medicas.ClasesSQL;
 import gestion.gestion_citas_medicas.ConexionBD.Conexion_BD;
 import gestion.gestion_citas_medicas.ClasesNormales.Cita_Medica;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Date;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Cita_MedicaSQL {
@@ -18,8 +17,7 @@ public class Cita_MedicaSQL {
         try (Connection con = Conexion_BD.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
 
-            // id_cita_medica NO se envía (AUTO_INCREMENT)
-            stmt.setInt(1, c.getIdDoctor());
+            stmt.setNull(1, java.sql.Types.INTEGER);
             stmt.setInt(2, c.getIdPaciente());
             stmt.setInt(3, c.getIdHorario());
             stmt.setInt(4, c.getIdTipo());   // id_especialidad
@@ -49,6 +47,7 @@ public class Cita_MedicaSQL {
         }
     }
 
+
     public void delete(int id) throws Exception {
         String sql = "DELETE FROM cita_medica WHERE id_cita_medica=?";
 
@@ -72,7 +71,6 @@ public class Cita_MedicaSQL {
 
             if (rs.next()) {
                 c = new Cita_Medica(
-                        rs.getInt("id_cita_medica"),
                         rs.getDate("fecha").toLocalDate(),
                         rs.getString("estado"),
                         rs.getInt("id_especialidad"),
@@ -86,24 +84,64 @@ public class Cita_MedicaSQL {
         return c;
     }
 
-    public List<Cita_Medica> findAll() throws Exception {
-        String sql = "SELECT * FROM cita_medica";
-        List<Cita_Medica> lista = new ArrayList<>();
+
+    public List<Integer> encontrarCitas(int idEspecialidad, LocalDate fecha) throws Exception {
+        String sql = "SELECT id_horario FROM cita_medica "
+                + "WHERE fecha = ? AND id_especialidad = ? AND estado = 'pendiente' ORDER BY id_horario";
+
+        List<Integer> horariosOcupados = new ArrayList<>();
 
         try (Connection con = Conexion_BD.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = con.prepareStatement(sql)) {
 
-            while (rs.next()) {
-                lista.add(new Cita_Medica(
-                        rs.getInt("id_cita_medica"),
-                        rs.getDate("fecha").toLocalDate(),
-                        rs.getString("estado"),
-                        rs.getInt("id_especialidad"),
-                        rs.getInt("id_doctor"),
-                        rs.getInt("id_paciente"),
-                        rs.getInt("id_horario")
-                ));
+            stmt.setDate(1, Date.valueOf(fecha));
+            stmt.setInt(2, idEspecialidad);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    horariosOcupados.add(rs.getInt("id_horario"));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("Error al obtener horarios ocupados.");
+        }
+
+        return horariosOcupados;
+    }
+
+    public List<Cita_Medica> encontrarCitasPorIdPaciente(int idPaciente) throws Exception {
+        List<Cita_Medica> lista = new ArrayList<>();
+
+        // Consulta SQL simplificada: Solo datos de la cita (incluyendo todos los IDs)
+        String sql = "SELECT " +
+                "    id_cita_medica, fecha, estado, id_especialidad, id_horario, id_doctor " +
+                "FROM cita_medica " +
+                "WHERE id_paciente = ? AND estado = ?" +
+                "ORDER BY fecha, id_horario;";
+
+        try (Connection con = Conexion_BD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setInt(1, idPaciente);
+            stmt.setString(2, "pendiente");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+
+                    Cita_Medica cita = new Cita_Medica();
+
+                    cita.setIdCita(rs.getInt("id_cita_medica"));
+                    cita.setFechaCita(rs.getDate("fecha").toLocalDate());
+                    cita.setEstado(rs.getString("estado"));
+
+                    cita.setIdTipo(rs.getInt("id_especialidad"));
+                    cita.setIdHorario(rs.getInt("id_horario"));
+                    cita.setIdDoctor(rs.getInt("id_doctor"));
+
+                    lista.add(cita);
+                }
             }
         }
         return lista;

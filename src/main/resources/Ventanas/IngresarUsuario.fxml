@@ -1,41 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <Pane layoutX="20.0" layoutY="14.0" prefHeight="374.0" prefWidth="562.0">
-         <children>
-            <Label layoutX="202.0" layoutY="14.0" text="INFORMACIÓN DEL USUARIO" />
-            <Label layoutX="37.0" layoutY="47.0" text="Tipo de rol:" />
-            <Label layoutX="281.0" layoutY="48.0" text="Especialidad:" />
-            <Label layoutX="29.0" layoutY="87.0" text="DATOS:" />
-            <Label layoutX="29.0" layoutY="124.0" text="Nombre/s: " />
-            <Label layoutX="31.0" layoutY="169.0" text="Apellido/s:" />
-            <Label layoutX="35.0" layoutY="214.0" text="Telefono:" />
-            <Label layoutX="40.0" layoutY="259.0" text="Correo:" />
-            <Label layoutX="296.0" layoutY="259.0" text="Dirección: " />
-            <Label layoutX="302.0" layoutY="121.0" text="Genero: " />
-            <Label layoutX="262.0" layoutY="214.0" text="Fecha Nacimiento:" wrapText="true" />
-            <Label layoutX="304.0" layoutY="166.0" text="Cedula:" />
-            <TextField layoutX="100.0" layoutY="120.0" prefHeight="17.0" prefWidth="146.0" />
-            <TextField layoutX="100.0" layoutY="165.0" prefHeight="17.0" prefWidth="146.0" />
-            <TextField layoutX="100.0" layoutY="210.0" prefHeight="17.0" prefWidth="146.0" />
-            <TextField layoutX="100.0" layoutY="255.0" prefHeight="17.0" prefWidth="146.0" />
-            <TextField layoutX="365.0" layoutY="255.0" prefHeight="17.0" prefWidth="146.0" />
-            <TextField layoutX="365.0" layoutY="162.0" prefHeight="17.0" prefWidth="146.0" />
-            <Button layoutX="438.0" layoutY="320.0" mnemonicParsing="false" text="Crear Usuario" />
-            <Button layoutX="34.0" layoutY="320.0" mnemonicParsing="false" text="Regresar al menú" />
-            <DatePicker layoutX="365.0" layoutY="210.0" />
-            <ComboBox layoutX="112.0" layoutY="44.0" prefWidth="150.0" />
-            <ComboBox layoutX="352.0" layoutY="43.0" prefWidth="150.0" />
-            <ComboBox layoutX="365.0" layoutY="117.0" prefHeight="25.0" prefWidth="60.0" />
-         </children>
-      </Pane>
-   </children>
+<Pane fx:id="paneFondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../CSS/IngresarUsuarioCSS.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestion.gestion_citas_medicas.Controladores.CIngresarUsuario">
+
+
+
+    <children>
+
+        <Pane fx:id="paneFrente" layoutX="20.0" layoutY="14.0" prefHeight="372.0" prefWidth="560.0">
+
+            <children>
+
+                <!-- Título -->
+
+                <Label fx:id="labelTitulo" layoutX="183.0" layoutY="7.0" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Creación de un Usuario" />
+
+
+
+                <!-- Selección de rol y especialidad -->
+
+                <Label fx:id="labelRol" layoutX="37.0" layoutY="47.0" text="Tipo de rol:" />
+
+                <ChoiceBox fx:id="choiceboxRol" layoutX="112.0" layoutY="44.0" prefWidth="150.0" />
+
+
+
+                <Label fx:id="labelEspecialidad" layoutX="281.0" layoutY="48.0" text="Especialidad:" />
+
+                <ChoiceBox fx:id="choiceboxEspecialidad" layoutX="352.0" layoutY="43.0" prefWidth="150.0" />
+
+
+
+                <!-- Credenciales -->
+
+                <Label fx:id="labelCredenciales" layoutX="29.0" layoutY="76.0" style="-fx-font-weight: bold;" text="Credenciales:" />
+
+
+
+                <Label fx:id="labelUsuario" layoutX="48.0" layoutY="105.0" text="Usuario:" />
+
+                <TextField fx:id="textfieldUsuario" layoutX="100.0" layoutY="101.0" prefHeight="25.0" prefWidth="146.0" />
+
+
+
+                <Label fx:id="labelPassword" layoutX="304.0" layoutY="105.0" text="Password:" />
+
+                <PasswordField fx:id="passwordField" layoutX="364.0" layoutY="101.0" prefHeight="25.0" prefWidth="146.0" />
+
+
+
+                <!-- Datos personales -->
+
+                <Label fx:id="labelDatosPersonales" layoutX="31.0" layoutY="134.0" style="-fx-font-weight: bold;" text="Datos:" />
+
+
+
+                <Label fx:id="labelNombre" layoutX="29.0" layoutY="155.0" text="Nombre/s:" />
+
+                <TextField fx:id="textfieldNombre" layoutX="100.0" layoutY="151.0" prefHeight="25.0" prefWidth="146.0" />
+
+
+
+                <Label fx:id="labelApellido" layoutX="31.0" layoutY="200.0" text="Apellido/s:" />
+
+                <TextField fx:id="textfieldApellido" layoutX="100.0" layoutY="196.0" prefHeight="25.0" prefWidth="146.0" />
+
+
+
+                <Label fx:id="labelTelefono" layoutX="35.0" layoutY="245.0" text="Teléfono:" />
+
+                <TextField fx:id="textfieldTelefono" layoutX="100.0" layoutY="241.0" prefHeight="25.0" prefWidth="146.0" />
+
+
+
+                <Label fx:id="labelCorreo" layoutX="40.0" layoutY="290.0" text="Correo:" />
+
+                <TextField fx:id="textfieldCorreo" layoutX="100.0" layoutY="286.0" prefHeight="25.0" prefWidth="146.0" />
+
+
+
+                <Label fx:id="labelDireccion" layoutX="300.0" layoutY="192.0" text="Dirección:" />
+
+                <TextField fx:id="textfieldDireccion" layoutX="369.0" layoutY="188.0" prefHeight="25.0" prefWidth="146.0" />
+
+
+
+                <Label fx:id="labelGenero" layoutX="316.0" layoutY="278.0" text="Género:" />
+
+                <ChoiceBox fx:id="choiceboxGenero" layoutX="379.0" layoutY="274.0" prefHeight="25.0" prefWidth="100.0" />
+
+
+
+                <Label fx:id="labelFechaNacimiento" layoutX="262.0" layoutY="237.0" text="Fecha Nacimiento:" wrapText="true" />
+
+                <DatePicker fx:id="datePickerNacimiento" layoutX="365.0" layoutY="233.0" prefHeight="25.0" prefWidth="146.0" />
+
+
+
+                <Label fx:id="labelCedula" layoutX="304.0" layoutY="155.0" text="Cédula:" />
+
+                <TextField fx:id="textfieldCedula" layoutX="365.0" layoutY="151.0" prefHeight="25.0" prefWidth="146.0" />
+
+
+
+                <!-- Botones principales -->
+
+                <Button fx:id="buttonCrearUsuario" layoutX="286.0" layoutY="318.0" mnemonicParsing="false" onAction="#clickCrearUsuario" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Crear Usuario" />
+
+            </children>
+
+        </Pane>
+
+    </children>
+
 </Pane>
