@@ -11,16 +11,32 @@ public class Cita_Medica {
     private String estado;
     private LocalDate fechaCita;
 
+    // solo para efectos de interfaz, no se relaciona con la base de datos:
+    // ------------------------------------------
+    private String nombreDoctor;
+    private String especialidadNombre;
+    private String  horaRango;
+    // --------------------------------------------
+
+
     // -- Constructor
     public Cita_Medica() {}
 
-    public Cita_Medica(int idCita, LocalDate fechaCita, String estado, int idTipo, int idDoctor,
+    public Cita_Medica(LocalDate fechaCita, String estado, int idTipo, int idDoctor,
                        int idPaciente, int idHorario) {
-        this.idCita = idCita;
         this.fechaCita = fechaCita;
         this.estado = estado;
         this.idTipo = idTipo;
         this.idDoctor = idDoctor;
+        this.idPaciente = idPaciente;
+        this.idHorario = idHorario;
+    }
+
+
+    public Cita_Medica(LocalDate fechaCita, String estado, int idTipo, int idPaciente, int idHorario) {
+        this.fechaCita = fechaCita;
+        this.estado = estado;
+        this.idTipo = idTipo;
         this.idPaciente = idPaciente;
         this.idHorario = idHorario;
     }
@@ -81,5 +97,40 @@ public class Cita_Medica {
 
     public void setIdDoctor(int idDoctor) {
         this.idDoctor = idDoctor;
+    }
+    public String getNombreDoctor() {
+        return nombreDoctor;
+    }
+
+    public String getEspecialidadNombre() {
+        return especialidadNombre;
+    }
+
+    public void setEspecialidadNombre(String especialidadNombre) {
+        this.especialidadNombre = especialidadNombre;
+    }
+
+    public void setNombreDoctor(String nombreDoctor) {
+        this.nombreDoctor = nombreDoctor;
+    }
+
+    public String getHoraRango() {
+        return horaRango;
+    }
+
+    public void setHoraRango(String horaRango) {
+        this.horaRango = horaRango;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "idCita: %s\nidPaciente: %s\nFecha cita: %s\nHora Cita: %s\nEspecialidad: %s\nEstado: %s\nDoctor: %s\n",
+                idCita, idPaciente, fechaCita.toString(), horaRango,especialidadNombre,estado, nombreDoctor
+        );
+    }
+
+    public void setDoctorNombre(String nombreDoctor) {
+        this.nombreDoctor = nombreDoctor;
     }
 }

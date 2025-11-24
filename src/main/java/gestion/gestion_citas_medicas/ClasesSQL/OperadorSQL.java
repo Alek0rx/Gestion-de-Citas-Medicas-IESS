@@ -169,4 +169,41 @@ public class OperadorSQL {
         }
         return null;
     }
+    public String obtenerNombreCompleto(int idUsuario) {
+        String sql = "SELECT nombre, apellido FROM operador WHERE id_usuario = ?";
+        try (Connection con = Conexion_BD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, idUsuario);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("nombre") + " " + rs.getString("apellido");
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return "Desconocido";
+    }
+
+
+
+    public void insertarOperador(Operador o) throws SQLException {
+        // 🚨 Importante: Ajusta el SQL para incluir todas las columnas de tu tabla 'operador'
+        String sql = "INSERT INTO operador (nombre, apellido, cedula_op, telefono, correo, direccion, id_usuario) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection con = Conexion_BD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setString(1, o.getNombre());
+            stmt.setString(2, o.getApellido());
+            stmt.setString(3, o.getCedula());
+            stmt.setString(4, o.getTelefono());
+            stmt.setString(5, o.getCorreo());
+            stmt.setString(6, o.getDireccion());
+
+            // Clave Foránea
+            stmt.setInt(7, o.getIdUsuario()); // El FK obtenido de la tabla 'usuario'
+
+            stmt.executeUpdate();
+        }
+    }
+
 }

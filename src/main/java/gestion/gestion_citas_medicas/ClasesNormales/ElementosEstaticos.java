@@ -1,13 +1,31 @@
 package gestion.gestion_citas_medicas.ClasesNormales;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ElementosEstaticos {
 
-    private static final Map<Integer, String> horarios = new LinkedHashMap<>();
-    private static final Map<Integer, String> especialidad = new LinkedHashMap<>();
+    public static final Map<Integer, String> horarios = new LinkedHashMap<>();
+    public static final Map<Integer, String> especialidad = new LinkedHashMap<>();
+
+
+    private static final Map<Integer, String> PREFIJOS_CONSULTORIO = Map.ofEntries(
+            // Clave (ID) -> Valor (CÓDIGO GENÉRICO)
+            Map.entry(1,  "MG-00M"),
+            Map.entry(2,  "PED-00P"),
+            Map.entry(3,  "GIN-00G"),
+            Map.entry(4,  "DER-00D"),
+            Map.entry(5,  "CAR-00C"),
+            Map.entry(6,  "OFT-00O"),
+            Map.entry(7,  "ODO-00O"),
+            Map.entry(8,  "TRA-00T"),
+            Map.entry(9,  "PSI-00P"),
+            Map.entry(10, "NUT-00N"),
+            Map.entry(11, "END-00E"),
+            Map.entry(12, "URO-00U")
+    );
 
     static {
         horarios.put(1, "08:00 - 08:20");
@@ -36,7 +54,7 @@ public class ElementosEstaticos {
         horarios.put(24, "16:40 - 17:00");
     }
     static {
-        especialidad.put(1, "Medicina General / Familiar");
+        especialidad.put(1, "Medicina General");
         especialidad.put(2, "Pediatría");
         especialidad.put(3, "Ginecología y Obstetricia");
         especialidad.put(4, "Dermatología");
@@ -45,7 +63,7 @@ public class ElementosEstaticos {
         especialidad.put(7, "Odontología");
         especialidad.put(8, "Traumatología y Ortopedia");
         especialidad.put(9, "Psicología/Psiquiatría");
-        especialidad.put(10, "Nutrición y Dietética");
+        especialidad.put(10, "Nutrición");
         especialidad.put(11, "Endocrinología");
         especialidad.put(12, "Urología");
     }
@@ -61,4 +79,25 @@ public class ElementosEstaticos {
     public static String getEspecialidadPorId(int id) {
         return especialidad.get(id);
     }
+    public static int getIdEspecialidad(String tipo) {
+        for (Map.Entry<Integer, String> entry : especialidad.entrySet()) {
+            if (entry.getValue().equals(tipo)) {
+                return entry.getKey();
+            }
+        }
+        throw new RuntimeException("Error, no se encontró la especialidad");
+    }
+
+    public static int getIdHorario (String horario) {
+        for (Map.Entry<Integer, String> entry : horarios.entrySet()) {
+            if (entry.getValue().equals(horario)) {
+                return entry.getKey();
+            }
+        }
+        throw new RuntimeException("Error, no se encontró el horario");
+    }
+    public static String generarConsultorioGenerico(int idEspecialidad) {
+        return PREFIJOS_CONSULTORIO.getOrDefault(idEspecialidad, "N/A");
+    }
+
 }

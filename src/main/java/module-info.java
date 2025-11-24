@@ -8,7 +8,7 @@ module gestion.gestion_citas_medicas {
     requires javafx.base;
     requires java.desktop;
     //requires gestion.gestion_citas_medicas;
-
+    opens gestion.gestion_citas_medicas.ClasesNormales to javafx.base;
 
     opens gestion.gestion_citas_medicas to javafx.fxml;
     exports gestion.gestion_citas_medicas;

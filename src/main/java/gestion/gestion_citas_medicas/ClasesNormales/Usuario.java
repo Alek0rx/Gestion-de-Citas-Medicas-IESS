@@ -6,6 +6,10 @@ public class Usuario {
     private String password;
     private String rol;
     private String estado;
+    private String especialidad;
+
+    // ----- SOLO POR CUESTIONES DE INTERFAZ ------
+    private String nombreUsuario;
 
     // -- Constructor --
     public Usuario() {}
@@ -57,5 +61,21 @@ public class Usuario {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public void setEspecialidad(String especialidad) {
+        this.especialidad = especialidad;
+    }
+
+    public String getEspecialidad() {
+        return especialidad != null ? especialidad : "";
     }
 }

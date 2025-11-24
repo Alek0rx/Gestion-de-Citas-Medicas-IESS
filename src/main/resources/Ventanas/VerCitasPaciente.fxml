@@ -6,27 +6,28 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="paneFondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestion.gestion_citas_medicas.Controladores.CVerCitasPaciente">
-   <children>
-      <Pane fx:id="paneFrente" layoutX="27.0" layoutY="17.0" prefHeight="366.0" prefWidth="547.0">
-         <children>
-            <TableView fx:id="tableCitas" fixedCellSize="5.0" layoutX="36.0" layoutY="83.0" prefHeight="200.0" prefWidth="476.0">
-              <columns>
-                <TableColumn fx:id="columnFechaCita" prefWidth="75.0" text="Fecha" />
-                <TableColumn fx:id="columnHoraCita" prefWidth="75.0" text="Hora" />
-                  <TableColumn fx:id="columnHoraEspecialidad" prefWidth="75.0" text="Especialidad" />
-                  <TableColumn fx:id="columnDoctorCita" prefWidth="75.0" text="Doctor" />
-                  <TableColumn fx:id="columnEstadoCita" prefWidth="75.0" text="Estado" />
-              </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
-            <Label fx:id="labelVerCitas" layoutX="219.0" layoutY="43.0" text="CITAS REGISTRADAS" />
-            <Button fx:id="buttonRegresarAlMenu" layoutX="36.0" layoutY="328.0" mnemonicParsing="false" onAction="#clickRegresarAlMenu" text="Regresar al menú" />
-            <Button fx:id="buttonCancelarCita" layoutX="430.0" layoutY="328.0" mnemonicParsing="false" onAction="#clickCancelarCita" text="Cancelar Cita" />
-            <Button fx:id="buttonReprogramarCita" layoutX="298.0" layoutY="328.0" mnemonicParsing="false" onAction="#clickReprogramarCita" text="Reprogramar Cita" />
-         </children>
-      </Pane>
-   </children>
+<Pane fx:id="paneFondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../CSS/VerCitasCSS.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestion.gestion_citas_medicas.Controladores.CVerCitasPaciente">
+    <children>
+        <Pane fx:id="paneFrente" layoutX="27.0" layoutY="17.0" prefHeight="366.0" prefWidth="547.0">
+            <children>
+                <TableView fx:id="tableCitas" fixedCellSize="25.0" layoutX="18.0" layoutY="69.0" prefHeight="225.0" prefWidth="513.0">
+                    <columns>
+                        <TableColumn fx:id="columnFechaCita" prefWidth="75.0" text="Fecha" />
+                        <TableColumn fx:id="columnHoraCita" prefWidth="75.0" text="Hora" />
+                        <TableColumn fx:id="columnEspecialidad" prefWidth="75.0" text="Especialidad" />
+                        <TableColumn fx:id="columnDoctorCita" prefWidth="75.0" text="Doctor" />
+                        <TableColumn fx:id="columnEstadoCita" prefWidth="75.0" text="Estado" />
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                </TableView>
+                <Label fx:id="labelVerCitas" layoutX="185.0" layoutY="24.0" text="CITAS REGISTRADAS" />
+
+                <Button fx:id="buttonRegresarAlMenu" layoutX="36.0" layoutY="320.0" mnemonicParsing="false" onAction="#clickRegresarAlMenu" styleClass="action-button" text="Regresar al menú" />
+                <Button fx:id="buttonCancelarCita" layoutX="435.0" layoutY="320.0" mnemonicParsing="false" onAction="#clickCancelarCita" styleClass="action-button" text="Cancelar Cita" />
+                <Button fx:id="buttonReprogramarCita" layoutX="274.0" layoutY="320.0" mnemonicParsing="false" onAction="#clickReprogramarCita" styleClass="action-button" text="Reprogramar Cita" />
+            </children>
+        </Pane>
+    </children>
 </Pane>
