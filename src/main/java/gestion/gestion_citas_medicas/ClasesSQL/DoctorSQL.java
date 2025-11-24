@@ -163,12 +163,46 @@ public class DoctorSQL {
         return d;
     }
 
-    public String obtenerEspecialidadPorUsuario(int idUsuario) throws Exception {
-        String sql = "SELECT e.id_especialidad " +
-                "FROM doctor d " +
-                "JOIN especialidad e ON d.id_especialidad = e.id_especialidad " +
-                "WHERE d.id_usuario = ?";
-        String especialidad = null;
+
+
+    public Map<Integer, String> obtenerMapaNombresDoctores() throws Exception {
+        // 1. Incluimos el id_doctor en la consulta SQL
+        String sql = "SELECT id_doctor, nombre, apellido FROM doctor WHERE estado = 'activo'"; // Solo doctores activos
+        Map<Integer, String> mapaNombres = new HashMap<>();
+
+        try (Connection con = Conexion_BD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int idDoctor = rs.getInt("id_doctor");
+                String nombre = rs.getString("nombre");
+                String apellido = rs.getString("apellido");
+
+                // 2. Construimos el String del nombre completo
+                String nombreCompleto = nombre + " " + apellido;
+
+                // 3. Añadimos al mapa: ID (clave) -> Nombre Completo (valor)
+                mapaNombres.put(idDoctor, nombreCompleto);
+            }
+        }
+        return mapaNombres;
+    }
+    public String obtenerNombreCompleto(int idUsuario) {
+        String sql = "SELECT nombre, apellido FROM doctor WHERE id_usuario = ?";
+        try (Connection con = Conexion_BD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, idUsuario);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("nombre") + " " + rs.getString("apellido");
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return "Desconocido";
+    }
+
+    public String obtenerEspecialidadPorIdUsuario(int idUsuario) {
+        String sql = "SELECT id_especialidad FROM doctor WHERE id_usuario = ?";
 
         try (Connection con = Conexion_BD.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -177,11 +211,39 @@ public class DoctorSQL {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                especialidad = rs.getString("nombre_especialidad");
-            }
-        }
+                int idEspecialidad = rs.getInt("id_especialidad");
 
-        return especialidad;
+                return ElementosEstaticos.especialidad.getOrDefault(idEspecialidad, "No Asignada");
+            }
+        } catch (Exception e) {
+            System.err.println("Error al obtener especialidad: " + e.getMessage());
+        }
+        return "N/A";
+    }
+
+    public void insertarDoctor(Doctor d) throws SQLException {
+        String sql = "INSERT INTO doctor (nombre, apellido, cedula_doc, telefono, correo, direccion, id_especialidad, id_usuario, estado, consultorio) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+
+        try (Connection con = Conexion_BD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setString(1, d.getNombre());
+            stmt.setString(2, d.getApellido());
+            stmt.setString(3, d.getCedula());
+            stmt.setString(4, d.getTelefono());
+            stmt.setString(5, d.getCorreo());
+            stmt.setString(6, d.getDireccion());
+
+            // Si el objeto Doctor ya tiene el ID de especialidad:
+            stmt.setInt(7, d.getIdEspecialidad()); // Suponiendo que el objeto Doctor ya tiene el ID de especialidad
+
+            // Clave Foránea
+            stmt.setInt(8, d.getIdUsuario()); // El FK obtenido de la tabla 'usuario'
+            stmt.setString(9, d.getEstado());
+            stmt.setString(10, d.getConsultorio());
+            stmt.executeUpdate();
+        }
     }
 
 }
