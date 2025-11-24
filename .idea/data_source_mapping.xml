@@ -3,6 +3,7 @@
   <component name="DataSourcePerFileMappings">
     <file url="das://235b64ba-2f0e-42f4-a01b-284aee5f24b0/schema/proyecto_avance4.sql" value="235b64ba-2f0e-42f4-a01b-284aee5f24b0" />
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/235b64ba-2f0e-42f4-a01b-284aee5f24b0/console.sql" value="235b64ba-2f0e-42f4-a01b-284aee5f24b0" />
+    <file url="file://$PROJECT_DIR$/src/main/java/gestion/gestion_citas_medicas/ClasesSQL/Cita_MedicaSQL.java" value="235b64ba-2f0e-42f4-a01b-284aee5f24b0" />
     <file url="file://$PROJECT_DIR$/src/main/java/gestion/gestion_citas_medicas/ClasesSQL/DoctorSQL.java" value="235b64ba-2f0e-42f4-a01b-284aee5f24b0" />
     <file url="file://$PROJECT_DIR$/src/main/java/gestion/gestion_citas_medicas/ClasesSQL/HorarioSQL.java" value="235b64ba-2f0e-42f4-a01b-284aee5f24b0" />
     <file url="file://$PROJECT_DIR$/src/main/java/gestion/gestion_citas_medicas/ClasesSQL/UsuarioSQL.java" value="235b64ba-2f0e-42f4-a01b-284aee5f24b0" />

@@ -10,6 +10,7 @@ module gestion.gestion_citas_medicas {
     //requires gestion.gestion_citas_medicas;
     //requires gestion.gestion_citas_medicas;
     //requires gestion.gestion_citas_medicas;
+    //requires gestion.gestion_citas_medicas;
 
 
     opens gestion.gestion_citas_medicas to javafx.fxml;

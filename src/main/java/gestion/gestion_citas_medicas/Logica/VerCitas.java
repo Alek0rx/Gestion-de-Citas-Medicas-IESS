@@ -1,14 +1,16 @@
 package gestion.gestion_citas_medicas.Logica;
 
-import gestion.gestion_citas_medicas.ClasesNormales.Cita_Medica;
-import gestion.gestion_citas_medicas.ClasesNormales.Horario;
-import gestion.gestion_citas_medicas.ClasesNormales.Paciente;
+import gestion.gestion_citas_medicas.ClasesNormales.*;
+import gestion.gestion_citas_medicas.ClasesSQL.Cita_MedicaSQL;
 import gestion.gestion_citas_medicas.ClasesSQL.HorarioSQL;
 import gestion.gestion_citas_medicas.ClasesSQL.PacienteSQL;
+import gestion.gestion_citas_medicas.Controladores.CVerCitasDoctor;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class crearMensaje {
+public class VerCitas {
     public String generarMensajeDetalles(Cita_Medica citaSeleccionada) throws Exception {
 
         // ===== PACIENTE =====
@@ -45,4 +47,7 @@ public class crearMensaje {
                 JOptionPane.INFORMATION_MESSAGE
         );
     }
+
+
+
 }

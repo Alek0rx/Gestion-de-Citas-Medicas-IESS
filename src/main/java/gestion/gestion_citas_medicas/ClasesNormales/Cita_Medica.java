@@ -1,5 +1,7 @@
 package gestion.gestion_citas_medicas.ClasesNormales;
 
+import gestion.gestion_citas_medicas.ClasesSQL.HorarioSQL;
+
 import java.time.LocalDate;
 
 public class Cita_Medica {
@@ -12,7 +14,8 @@ public class Cita_Medica {
     private LocalDate fechaCita;
 
     // -- Constructor
-    public Cita_Medica() {}
+    public Cita_Medica() {
+    }
 
     public Cita_Medica(int idCita, LocalDate fechaCita, String estado, int idTipo, int idDoctor,
                        int idPaciente, int idHorario) {
@@ -82,4 +85,6 @@ public class Cita_Medica {
     public void setIdDoctor(int idDoctor) {
         this.idDoctor = idDoctor;
     }
+
+
 }

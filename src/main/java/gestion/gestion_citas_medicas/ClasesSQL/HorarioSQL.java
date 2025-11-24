@@ -55,6 +55,25 @@ public class HorarioSQL {
         return h;
     }
 
+    public Horario findById2(int idHorario) throws Exception {
+
+        String sql = "SELECT * FROM horario WHERE id_horario = ?";
+
+        Connection con = Conexion_BD.getConnection();
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, idHorario);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            Horario h = new Horario();
+            h.setIdHorario(rs.getInt("idHorario"));
+            h.setHora(rs.getString("hora"));
+            return h;
+        }
+
+        return null;
+    }
+
     public List<Horario> listarTodos() {
         List<Horario> lista = new ArrayList<>();
         String sql = "SELECT * FROM horario ORDER BY hora_inicio";
