@@ -246,4 +246,41 @@ public class DoctorSQL {
         }
     }
 
+
+    public List<Doctor> findByEspecialidad(String especialidadSeleccionada) throws Exception {
+        List<Doctor> doctores = new ArrayList<>();
+
+        // La consulta SQL une la tabla 'doctor' con 'especialidad' para poder filtrar por el nombre.
+        String sql = "SELECT D.id_doctor, D.nombre, D.apellido, D.id_especialidad " +
+                "FROM doctor D " +
+                "JOIN especialidad E ON D.id_especialidad = E.id_especialidad " +
+                "WHERE E.nombre = ? AND D.estado = 'activo'"; // Solo doctores activos
+
+        try (Connection conn = Conexion_BD.getConnection(); // Usando tu método de conexión de referencia
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // 1. Asignamos el nombre de la especialidad al placeholder (?)
+            ps.setString(1, especialidadSeleccionada);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    // 2. Creamos el objeto Doctor y lo mapeamos
+                    Doctor doctor = new Doctor();
+
+                    // Asumiendo que Doctor tiene estos setters y la tabla tiene estas columnas
+                    doctor.setIdDoctor(rs.getInt("id_doctor"));
+                    doctor.setNombre(rs.getString("nombre"));
+                    doctor.setApellido(rs.getString("apellido"));
+                    // doctor.setIdEspecialidad(rs.getInt("id_especialidad")); // Opcional, si lo necesitas
+
+                    // Nota: Asumo que la clase Doctor tiene un constructor por defecto y setters.
+
+                    doctores.add(doctor);
+                }
+            }
+        } catch (Exception e) {
+            throw new Exception("Error al buscar doctores por especialidad (" + especialidadSeleccionada + "): " + e.getMessage(), e);
+        }
+        return doctores;
+    }
 }

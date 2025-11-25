@@ -10,7 +10,7 @@ import java.util.List;
 public class PacienteSQL {
 
     public void update(Paciente p) throws Exception {
-        String sql = "UPDATE paciente SET nombre=?, apellido=?, cedula=?, telefono=?, correo=?, direccion=? WHERE id_paciente=?";
+        String sql = "UPDATE paciente SET nombre=?, apellido=?, cedula_paciente=?, telefono=?, correo=?, direccion=? WHERE id_paciente=?";
 
         try (Connection con = Conexion_BD.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {

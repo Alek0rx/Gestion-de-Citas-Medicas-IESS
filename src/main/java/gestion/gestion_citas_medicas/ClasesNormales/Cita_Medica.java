@@ -16,8 +16,11 @@ public class Cita_Medica {
     // solo para efectos de interfaz, no se relaciona con la base de datos:
     // ------------------------------------------
     private String nombreDoctor;
+    private String apellidoDoctor;
     private String especialidadNombre;
     private String  horaRango;
+    private String nombrePaciente;
+    private String apellidoPaciente;
     // --------------------------------------------
 
 
@@ -126,6 +129,30 @@ public class Cita_Medica {
 
     public void setHoraRango(String horaRango) {
         this.horaRango = horaRango;
+    }
+
+    public String getNombrePaciente() {
+        return nombrePaciente;
+    }
+
+    public void setNombrePaciente(String nombrePaciente) {
+        this.nombrePaciente = nombrePaciente;
+    }
+
+    public String getApellidoPaciente() {
+        return apellidoPaciente;
+    }
+
+    public void setApellidoPaciente(String apellidoPaciente) {
+        this.apellidoPaciente = apellidoPaciente;
+    }
+
+    public String getApellidoDoctor() {
+        return apellidoDoctor;
+    }
+
+    public void setApellidoDoctor(String apellidoDoctor) {
+        this.apellidoDoctor = apellidoDoctor;
     }
 
     @Override

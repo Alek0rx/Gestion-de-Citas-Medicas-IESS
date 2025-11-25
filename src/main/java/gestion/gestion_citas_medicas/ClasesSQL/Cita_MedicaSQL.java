@@ -1,5 +1,6 @@
 package gestion.gestion_citas_medicas.ClasesSQL;
 
+import gestion.gestion_citas_medicas.ClasesNormales.ElementosEstaticos;
 import gestion.gestion_citas_medicas.ConexionBD.Conexion_BD;
 import gestion.gestion_citas_medicas.ClasesNormales.Cita_Medica;
 
@@ -263,7 +264,7 @@ public class Cita_MedicaSQL {
 
                 cita.setFechaCita(rs.getDate("fecha").toLocalDate());
                 cita.setEstado(rs.getString("estado"));
-                cita.setIdTipo(rs.getInt("id_especialidad"));
+                cita.setIdTipo(rs.getInt("id_tipo"));
                 cita.setIdDoctor(rs.getInt("id_doctor"));
                 cita.setIdPaciente(rs.getInt("id_paciente"));
                 cita.setIdHorario(rs.getInt("id_horario"));
@@ -293,4 +294,123 @@ public class Cita_MedicaSQL {
             throw new Exception("Error al actualizar el estado de la cita: " + e.getMessage(), e);
         }
     }
+
+
+    public void asignarDoctor(int idCita, int idDoctor) throws Exception {
+        String sql = "UPDATE cita_medica SET id_doctor = ?, estado = 'asignada' WHERE id_cita_medica = ? AND estado = 'pendiente'";
+
+        try (Connection conn = Conexion_BD.getConnection(); // Asumiendo que esta es tu clase de conexión
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idDoctor);
+            ps.setInt(2, idCita);
+            int filasAfectadas = ps.executeUpdate();
+
+            if (filasAfectadas == 0) {
+                throw new Exception("No se pudo asignar el doctor. Verifique si la cita con ID: " + idCita + " existe y está en estado 'pendiente'.");
+            }
+
+        } catch (Exception e) {
+            throw new Exception("Error al asignar el doctor a la cita: " + e.getMessage(), e);
+        }
+    }
+
+    // Clase: gestion.gestion_citas_medicas.ClasesSQL.Cita_MedicaSQL
+
+    public List<Cita_Medica> findAllPendientes() throws Exception {
+        String sql = "SELECT cm.id_cita_medica, cm.fecha, cm.id_horario, cm.id_especialidad, cm.estado, cm.id_paciente, " +
+                "p.nombre AS nombre_paciente, p.apellido AS apellido_paciente, " +
+                "D.nombre AS nombre_doctor, D.apellido AS apellido_doctor " + // <-- Campos del Doctor
+                "FROM cita_medica cm " +
+                "JOIN paciente p ON cm.id_paciente = p.id_paciente " +
+                "JOIN especialidad e ON cm.id_especialidad = e.id_especialidad " +
+                "LEFT JOIN doctor D ON cm.id_doctor = D.id_doctor " + // <-- LEFT JOIN para incluir Doctor (NULL si no está asignado)
+                "WHERE cm.estado IN ('pendiente', 'asignada')"; // Mostramos pendientes y asignadas
+
+        List<Cita_Medica> citas = new ArrayList<>();
+
+        try (Connection conn = Conexion_BD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Cita_Medica cita = new Cita_Medica();
+                cita.setFechaCita(rs.getDate("fecha").toLocalDate());
+                cita.setIdCita(rs.getInt("id_cita_medica"));
+                cita.setIdHorario(rs.getInt("id_horario"));
+                cita.setNombrePaciente(rs.getString("nombre_paciente"));
+                cita.setApellidoPaciente(rs.getString("apellido_paciente"));
+
+                // 🌟 NUEVO: Mapeo del Doctor Asignado
+                String nombreDoc = rs.getString("nombre_doctor");
+                String apellidoDoc = rs.getString("apellido_doctor");
+
+                if (nombreDoc == null) {
+                    cita.setNombreDoctor("PENDIENTE");
+                    cita.setApellidoDoctor(""); // Dejamos el apellido vacío o como "DE ASIGNAR"
+                } else {
+                    cita.setNombreDoctor(nombreDoc);
+                    cita.setApellidoDoctor(apellidoDoc);
+                }
+
+                citas.add(cita);
+            }
+
+        } catch (Exception e) {
+            throw new Exception("Error al obtener todas las citas: " + e.getMessage(), e);
+        }
+        return citas;
+    }
+
+    // Clase: gestion.gestion_citas_medicas.ClasesSQL.Cita_MedicaSQL
+
+    public List<Cita_Medica> findPendientesByEspecialidad(String especialidad) throws Exception {
+
+        String sql = "SELECT cm.id_cita_medica, cm.fecha, cm.id_horario, cm.id_especialidad, cm.estado, cm.id_paciente, " +
+                "p.nombre AS nombre_paciente, p.apellido AS apellido_paciente, " +
+                "D.nombre AS nombre_doctor, D.apellido AS apellido_doctor " + // <-- Campos del Doctor
+                "FROM cita_medica cm " +
+                "JOIN paciente p ON cm.id_paciente = p.id_paciente " +
+                "JOIN especialidad e ON cm.id_especialidad = e.id_especialidad " +
+                "LEFT JOIN doctor D ON cm.id_doctor = D.id_doctor " + // <-- LEFT JOIN para incluir Doctor
+                "WHERE cm.estado IN ('pendiente', 'asignada') AND e.nombre = ?"; // Filtro por estado y especialidad
+
+        List<Cita_Medica> citas = new ArrayList<>();
+
+        try (Connection conn = Conexion_BD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, especialidad);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Cita_Medica cita = new Cita_Medica();
+                    cita.setIdCita(rs.getInt("id_cita_medica"));
+                    cita.setFechaCita(rs.getDate("fecha").toLocalDate());
+                    cita.setIdHorario(rs.getInt("id_horario"));
+                    cita.setNombrePaciente(rs.getString("nombre_paciente"));
+                    cita.setApellidoPaciente(rs.getString("apellido_paciente"));
+
+                    // 🌟 NUEVO: Mapeo del Doctor Asignado
+                    String nombreDoc = rs.getString("nombre_doctor");
+                    String apellidoDoc = rs.getString("apellido_doctor");
+
+                    if (nombreDoc == null) {
+                        cita.setNombreDoctor("PENDIENTE");
+                        cita.setApellidoDoctor("");
+                    } else {
+                        cita.setNombreDoctor(nombreDoc);
+                        cita.setApellidoDoctor(apellidoDoc);
+                    }
+
+                    citas.add(cita);
+                }
+            }
+
+        } catch (Exception e) {
+            throw new Exception("Error al obtener citas por especialidad: " + e.getMessage(), e);
+        }
+        return citas;
+    }
+
 }
