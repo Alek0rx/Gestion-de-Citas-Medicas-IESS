@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="paneFondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../CSS/ReprogramarCitaCSS.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestion.gestion_citas_medicas.Controladores.CReprogramarCita">
+    <children>
+        <Pane fx:id="paneFrente" layoutX="18.0" layoutY="25.0" prefHeight="351.0" prefWidth="565.0">
+            <children>
+                <DatePicker fx:id="selectorFechaRC" layoutX="259.0" layoutY="128.0" prefHeight="25.0" prefWidth="165.0" styleClass="date-picker" />
+                <ComboBox fx:id="choiceBoxHorarioRC" layoutX="259.0" layoutY="179.0" onAction="#seleccionarHorario" prefHeight="25.0" prefWidth="165.0" styleClass="combo-box" />
+
+                <Button fx:id="buttonReagendarCitaRC" layoutX="390.0" layoutY="287.0" mnemonicParsing="false" onAction="#clickReagendarCita" styleClass="action-button" text="Reprogramar Cita" />
+                <Button fx:id="buttonRegresarMenuRC" layoutX="56.0" layoutY="287.0" mnemonicParsing="false" onAction="#clickRegresarAlMenu" styleClass="action-button" text="Regresar al menú" />
+
+                <Label fx:id="labelAC" layoutX="211.0" layoutY="23.0" text="Reprogramación de Citas" />
+                <Label fx:id="labelFechaRC" layoutX="131.0" layoutY="137.0" text="Escoja la fecha:" />
+                <Label fx:id="labelHorarioRC" layoutX="108.0" layoutY="188.0" text="Escoja la el horario: " />
+                <Label fx:id="labelEspecialidadRC" layoutX="131.0" layoutY="91.0" text="Especialidad:" />
+
+                <TextField fx:id="textfieldEspecialidadCitaRC" layoutX="260.0" layoutY="75.0" prefHeight="25.0" prefWidth="165.0" styleClass="text-input-readonly" />
+            </children>
+        </Pane>
+    </children>
+</Pane>

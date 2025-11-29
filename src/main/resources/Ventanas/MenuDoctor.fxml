@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="paneFondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../CSS/MenuDoctorCSS.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gestion.gestion_citas_medicas.Controladores.CMenuDoctor">
+    <children>
+        <Pane fx:id="paneFrente" layoutX="45.0" layoutY="32.0" prefHeight="341.0" prefWidth="514.0">
+            <children>
+                <Label fx:id="labelBienvenidaDoctor" layoutX="82.0" layoutY="33.0" text="Bienvenido al Módulo del Personal Médico" />
+                <Label fx:id="labelNombreDoctor" layoutX="109.0" layoutY="87.0" text="Nombre: " />
+                <TextField fx:id="textfieldNombreDoctor" layoutX="191.0" layoutY="83.0" prefHeight="25.0" prefWidth="214.0" styleClass="text-input-doctor" />
+                <Label fx:id="labelEspecialidadDoctor" layoutX="109.0" layoutY="129.0" text="Especialidad:" />
+                <TextField fx:id="textfieldEspecialidadDoctor" layoutX="191.0" layoutY="125.0" prefHeight="25.0" prefWidth="214.0" styleClass="text-input-doctor" />
+                <Button fx:id="buttonActualizarDatos" layoutX="95.0" layoutY="214.0" mnemonicParsing="false" onAction="#cambiarContenidoPanel" prefHeight="41.0" prefWidth="138.0" styleClass="menu-button" text="Actualizar Datos" />
+                <Button fx:id="buttonVerCitasDoctor" layoutX="301.0" layoutY="214.0" mnemonicParsing="false" onAction="#cambiarContenidoPanel" prefHeight="41.0" prefWidth="121.0" styleClass="menu-button" text="Ver Citas" />
+                <Button fx:id="buttonRegresarAlLogin" layoutX="28.0" layoutY="295.0" mnemonicParsing="false" onAction="#clickRegresarALogin" styleClass="menu-button" text="Regresar al Login" />
+            </children>
+        </Pane>
+    </children>
+</Pane>
